@@ -4,14 +4,31 @@
     <span class="addContainer" @click="addTodo">
       <i class="addBtn fas fa-plus" aria-hidden="true"></i>
     </span>
+
+    <Modal v-if="showModal" @close="showModal = false">
+      <h3 slot="header">
+        Error!
+
+        <i
+          class="closeModalBtn fa fa-times"
+          aria-hidden="true"
+          @click="showModal = false"
+        >
+        </i>
+      </h3>
+      <p slot="body">please input something.</p>
+    </Modal>
   </div>
 </template>
 
 <script>
+import Modal from './common/Modal';
+
 export default {
   data: function() {
     return {
       newTodoItem: '',
+      showModal: false,
     };
   },
   methods: {
@@ -19,11 +36,16 @@ export default {
       if (this.newTodoItem !== '') {
         this.$emit('addItem', this.newTodoItem);
         this.clearInput();
+      } else {
+        this.showModal = !this.showModal;
       }
     },
     clearInput() {
       this.newTodoItem = '';
     },
+  },
+  components: {
+    Modal,
   },
 };
 </script>
@@ -48,10 +70,18 @@ input:focus {
   display: block;
   width: 3rem;
   border-radius: 0 5px 5px 0;
+  cursor: pointer;
 }
 .addBtn {
   color: white;
   vertical-align: middle;
+}
+.closeModalBtn {
+  border: 1px black #42b983;
+  padding: 0.2rem;
+  border-radius: 25%;
+  margin-left: 20px;
+  color: #42b983;
   cursor: pointer;
 }
 </style>
